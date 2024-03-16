@@ -39,3 +39,40 @@ JOIN PortfolioProject..NashVilleHousingData b
 	on a.ParcelID = b.ParcelID
 	And a.[UniqueID ] <> b.[UniqueID ]
 where a.PropertyAddress is null
+
+
+--Splitting the address into readable form
+Select PropertyAddress
+From PortfolioProject..NashVilleHousingData
+
+Alter table PortfolioProject..NashVilleHousingData
+ADD Address NVARCHAR(255)
+
+Alter table PortfolioProject..NashVilleHousingData
+ADD City NVARCHAR(255)
+
+Update PortfolioProject..NashVilleHousingData
+Set Address = SUBSTRING(PropertyAddress, 1, CHARINDEX(',', PropertyAddress) - 1)
+
+Update PortfolioProject..NashVilleHousingData
+Set City = SUBSTRING(PropertyAddress, CHARINDEX(',', PropertyAddress) + 1, LEN(PropertyAddress))
+
+
+--Splitting the Owner's address into readable form
+Alter table PortfolioProject..NashVilleHousingData
+ADD Owner_Address NVARCHAR(255)
+
+Alter table PortfolioProject..NashVilleHousingData
+ADD Owner_City NVARCHAR(255)
+
+Alter table PortfolioProject..NashVilleHousingData
+ADD Owner_State NVARCHAR(255)
+
+Update PortfolioProject..NashVilleHousingData
+Set Owner_Address = PARSENAME(Replace(OwnerAddress, ',', '.'), 3)
+
+Update PortfolioProject..NashVilleHousingData
+Set Owner_City = PARSENAME(Replace(OwnerAddress, ',', '.'), 2)
+
+Update PortfolioProject..NashVilleHousingData
+Set Owner_State = PARSENAME(Replace(OwnerAddress, ',', '.'), 1)
