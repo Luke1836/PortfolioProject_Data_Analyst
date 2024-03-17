@@ -102,3 +102,10 @@ Where row_num > 1
 --WE DELETE THE REPEATING ROWS
 Delete from RowNumCTE
 Where row_num > 1
+
+
+--Removing the unnecssary columns
+Alter table PortfolioProject..NashVilleHousingData
+Drop Column PropertyAddress, OwnerAddress, SaleDate
+
+Select * From PortfolioProject..NashVilleHousingData
