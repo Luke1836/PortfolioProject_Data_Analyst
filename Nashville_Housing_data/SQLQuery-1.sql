@@ -92,3 +92,13 @@ SET SoldAsVacant = CASE WHEN SoldAsVacant = 'Y' THEN 'Yes'
 
 
 --Removing Duplicates
+WITH RowNumCTE AS (
+	Select *, ROW_NUMBER() OVER (Partition by ParcelID, SaleDate, SalePrice, OwnerName, Acreage, LandValue Order by UniqueID, ParcelID) row_num
+	FROM PortfolioProject..NashVilleHousingData
+)
+Select * FROM RowNumCTE
+Where row_num > 1
+
+--WE DELETE THE REPEATING ROWS
+Delete from RowNumCTE
+Where row_num > 1
