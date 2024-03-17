@@ -76,3 +76,19 @@ Set Owner_City = PARSENAME(Replace(OwnerAddress, ',', '.'), 2)
 
 Update PortfolioProject..NashVilleHousingData
 Set Owner_State = PARSENAME(Replace(OwnerAddress, ',', '.'), 1)
+
+
+--Changing Y/N to Yes/No
+SELECT DISTINCT SoldAsVacant, COUNT(SoldAsVacant)
+FROM PortfolioProject..NashVilleHousingData
+GROUP BY SoldAsVacant
+ORDER BY COUNT(SoldAsVacant);
+
+Update PortfolioProject..NashVilleHousingData
+SET SoldAsVacant = CASE WHEN SoldAsVacant = 'Y' THEN 'Yes'
+						WHEN SoldAsVacant = 'N' THEN 'NO'
+						ELSE SoldAsVacant
+					END
+
+
+--Removing Duplicates
