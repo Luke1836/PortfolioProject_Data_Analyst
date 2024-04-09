@@ -1,6 +1,23 @@
 Select * from PortfolioProject..CovidVaccinations
 order by 3 ASC
 
+Select * From PortfolioProject..CovidDeaths
+order by 3 ASC
+
+--Total Deaths per million vs Total Cases per million
+Select location, continent, date, total_cases_per_million, total_deaths_per_million
+From  PortfolioProject..CovidDeaths
+where continent is not null
+order by 1
+
+	--Finding the max of TCPM and TDPM
+	Select location, continent, date, MAX(Convert(float, total_cases_per_million)) as Maximum_TCPM
+	From  PortfolioProject..CovidDeaths
+	Where continent is not null
+	Group by location
+	Having count(*) = 1
+	Order by 1
+
 --Vaccinations vs deaths on day-to-day basis
 Select dea.location, dea.continent, dea.date, vac.new_vaccinations, dea.new_deaths
 from PortfolioProject..CovidVaccinations vac
