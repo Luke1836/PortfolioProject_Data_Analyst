@@ -11,11 +11,11 @@ where continent is not null
 order by 1
 
 	--Finding the max of TCPM and TDPM
-	Select location, continent, date, MAX(Convert(float, total_cases_per_million)) as Maximum_TCPM
+	Select location, continent, date, 
+	Max(Convert(float, total_cases_per_million)) OVER (Partition by location Order by location) as Maximum_TCPM,
+	Max(Convert(float, total_deaths_per_million)) OVER (Partition by location Order by location) as Maximum_TDPM
 	From  PortfolioProject..CovidDeaths
-	Where continent is not null
-	Group by location
-	Having count(*) = 1
+	Where continent is not null  
 	Order by 1
 
 --Vaccinations vs deaths on day-to-day basis
