@@ -115,3 +115,16 @@ Select dea.location, dea.continent, dea.date, vac.new_vaccinations, dea.new_deat
 	on dea.location = vac.location 
 	and dea.date = vac.date
 	where dea.continent is not null
+
+--Finding the maximum deaths per day for all countries
+Select DISTINCT location, Max(new_deaths) over (partition by location order by location asc) as Maximum_deaths_per_day
+From PortfolioProject..CovidDeaths
+where continent is not null
+order by 1 asc
+
+Select location, date, new_deaths
+From PortfolioProject..CovidDeaths
+where continent is not null and 
+new_deaths in (Select Max(new_deaths) over (partition by location order by location asc) from PortfolioProject..CovidDeaths)
+order by 1 asc
+
